@@ -1,0 +1,6 @@
+context_path: kedro_mlflow_tutorial.run.ProjectContext
+project_name: "kedro mlflow tutorial"
+project_version: "0.16.6"
+package_name: "kedro_mlflow_tutorial"
+hooks:
+  - kedro_mlflow_tutorial.hooks.project_hooks

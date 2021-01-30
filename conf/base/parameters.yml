@@ -1,0 +1,21 @@
+# ETL
+
+huggingface_split: ${huggingface_split} # provided in globals
+
+# TRAINING
+vocab_size: 2000
+
+early_stopping_test_size: 0.3
+split_seed: 42
+
+xgb_hyperparameters:
+  objective: "binary:logistic"
+  eta: 0.2
+  max_depth: 8
+  subsample: 0.8
+  colsample_bytree: 0.8
+  eval_metric: [auc, logloss]
+  nthread: -1
+
+xgb_num_rounds: 1000
+xgb_early_stopping_rounds: 10

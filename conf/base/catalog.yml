@@ -1,0 +1,69 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
+
+
+#### ETL 
+instances:
+  type: pickle.PickleDataSet
+  filepath: data/01_raw/instances_${huggingface_split}.pkl
+
+labels:
+  type: pickle.PickleDataSet
+  filepath: data/01_raw/labels_${huggingface_split}.pkl
+
+
+
+#### TRAINING
+english_stopwords:
+  type: yaml.YAMLDataSet
+  filepath: data/01_raw/stopwords.yml
+
+label_encoder:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/label_encoder.pkl
+
+keras_tokenizer:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/keras_tokenizer.pkl
+
+
+x_train:
+  type: pickle.PickleDataSet
+  filepath: data/04_feature/x_train.pkl
+
+x_test:
+  type: pickle.PickleDataSet
+  filepath: data/04_feature/x_test.pkl
+
+y_train:
+  type: pickle.PickleDataSet
+  filepath: data/04_feature/y_train.pkl
+
+y_test:
+  type: pickle.PickleDataSet
+  filepath: data/04_feature/y_test.pkl
+
+xgb_model:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/xgb_model.pkl
+
+xgb_feature_importance:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
+  data_set:
+    type: matplotlib.MatplotlibWriter
+    filepath: data\08_reporting\xgb_feature_importance.png
+
+
+#### USER_APP
+
+pipeline_inference_model:
+  type: kedro_mlflow.io.models.MlflowModelLoggerDataSet
+  flavor: mlflow.pyfunc
+  pyfunc_workflow: python_model
+  run_id: ${run_id_to_serve}
+
+final_predictions:
+  type: pickle.PickleDataSet
+  filepath: data/07_model_output/predictions_${huggingface_split}.pkl
