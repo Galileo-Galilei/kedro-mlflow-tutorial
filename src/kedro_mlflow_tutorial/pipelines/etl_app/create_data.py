@@ -1,13 +1,13 @@
-import pandas as pd
-from datasets import (
-    load_dataset,
-)  # see: https://huggingface.co/nlp/viewer/?dataset=imdb
-
 from typing import Union
+
+import pandas as pd
+from datasets import (  # see: https://huggingface.co/nlp/viewer/?dataset=imdb
+    load_dataset,
+)
 
 
 def create_instances(split: str) -> Union[pd.DataFrame, pd.DataFrame]:
-    """This functions emulates areal etl by creating instances 
+    """This functions emulates areal etl by creating instances
     and labels as if they were quried from a database
 
     Args:
@@ -24,7 +24,7 @@ def create_instances(split: str) -> Union[pd.DataFrame, pd.DataFrame]:
 
 
 def create_labels(split: str) -> Union[pd.DataFrame, pd.DataFrame]:
-    """This functions emulates areal etl by creating instances 
+    """This functions emulates areal etl by creating instances
     and labels as if they were quried from a database
 
     Args:
@@ -44,4 +44,3 @@ def create_labels(split: str) -> Union[pd.DataFrame, pd.DataFrame]:
     )
 
     return labels
-

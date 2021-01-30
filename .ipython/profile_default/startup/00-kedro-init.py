@@ -2,7 +2,7 @@ import logging.config
 import sys
 from pathlib import Path
 
-from IPython.core.magic import register_line_magic, needs_local_scope
+from IPython.core.magic import needs_local_scope, register_line_magic
 from kedro.framework.hooks import get_hook_manager
 
 # Find the project root (./../../../)
@@ -18,9 +18,9 @@ def reload_kedro(path, line=None):
     global catalog
 
     try:
-        import kedro.config.default_logger
-        from kedro.framework.context import load_context
+        import kedro.config.default_logger  # noqa
         from kedro.framework.cli.jupyter import collect_line_magic
+        from kedro.framework.context import load_context
     except ImportError:
         logging.error(
             "Kedro appears not to be installed in your current environment "

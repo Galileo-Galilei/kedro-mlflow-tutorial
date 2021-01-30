@@ -1,5 +1,6 @@
-import pandas as pd
 from string import punctuation
+
+import pandas as pd
 from keras_preprocessing.text import Tokenizer
 
 

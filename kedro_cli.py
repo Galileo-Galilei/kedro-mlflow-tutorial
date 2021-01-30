@@ -104,7 +104,7 @@ def _reformat_load_versions(  # pylint: disable=unused-argument
     ctx, param, value
 ) -> Dict[str, str]:
     """Reformat data structure from tuple to dictionary for `load-version`.
-        E.g ('dataset1:time1', 'dataset2:time2') -> {"dataset1": "time1", "dataset2": "time2"}.
+    E.g ('dataset1:time1', 'dataset2:time2') -> {"dataset1": "time1", "dataset2": "time2"}.
     """
     load_versions_dict = {}
 

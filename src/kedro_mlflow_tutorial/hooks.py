@@ -34,14 +34,11 @@ from kedro.framework.hooks import hook_impl
 from kedro.io import DataCatalog
 from kedro.pipeline import Pipeline
 from kedro.versioning import Journal
-
 from kedro_mlflow.pipeline import pipeline_ml_factory
-
 
 from kedro_mlflow_tutorial import __version__ as PROJECT_VERSION
 from kedro_mlflow_tutorial.pipelines.etl_app.pipeline import create_etl_pipeline
 from kedro_mlflow_tutorial.pipelines.ml_app.pipeline import create_ml_pipeline
-from kedro_mlflow_tutorial.pipelines.etl_app.pipeline import create_etl_pipeline
 from kedro_mlflow_tutorial.pipelines.user_app.pipeline import create_user_app_pipeline
 
 
@@ -90,7 +87,9 @@ class ProjectHooks:
         self, conf_paths: Iterable[str]
     ) -> TemplatedConfigLoader:
         return TemplatedConfigLoader(
-            conf_paths, globals_pattern="*globals.yml", globals_dict={},
+            conf_paths,
+            globals_pattern="*globals.yml",
+            globals_dict={},
         )
 
     @hook_impl

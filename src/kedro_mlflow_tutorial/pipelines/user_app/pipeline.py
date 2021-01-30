@@ -1,4 +1,5 @@
 from kedro.pipeline import Pipeline, node
+
 from kedro_mlflow_tutorial.pipelines.user_app.business_logic import predict_with_mlflow
 
 

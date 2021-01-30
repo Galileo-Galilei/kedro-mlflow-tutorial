@@ -10,4 +10,3 @@ def fit_label_encoder(labels):
 def transform_label_encoder(encoder, labels):
     encoded_labels = encoder.transform(labels)
     return encoded_labels
-

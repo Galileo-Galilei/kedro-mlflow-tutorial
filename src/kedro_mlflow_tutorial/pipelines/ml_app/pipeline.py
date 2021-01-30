@@ -1,24 +1,25 @@
 from kedro.pipeline import Pipeline, node
+
+from kedro_mlflow_tutorial.pipelines.ml_app.nodes_ml.predict import (
+    decode_predictions,
+    predict_with_xgboost,
+)
 from kedro_mlflow_tutorial.pipelines.ml_app.nodes_ml.preprocess_labels import (
     fit_label_encoder,
     transform_label_encoder,
 )
 from kedro_mlflow_tutorial.pipelines.ml_app.nodes_ml.preprocess_text import (
-    lowerize_text,
-    remove_stopwords,
-    remove_punctuation,
     convert_data_to_list,
     fit_tokenizer,
+    lowerize_text,
+    remove_punctuation,
+    remove_stopwords,
     tokenize_text,
 )
 from kedro_mlflow_tutorial.pipelines.ml_app.nodes_ml.train_model import (
     create_training_data,
-    train_xgb_model,
     plot_xgb_importance,
-)
-from kedro_mlflow_tutorial.pipelines.ml_app.nodes_ml.predict import (
-    predict_with_xgboost,
-    decode_predictions,
+    train_xgb_model,
 )
 
 
@@ -140,4 +141,3 @@ def create_ml_pipeline(**kwargs):
         + pipeline_training
         + pipeline_inference
     )
-

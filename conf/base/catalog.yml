@@ -4,7 +4,7 @@
 # Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
 
 
-#### ETL 
+#### ETL
 instances:
   type: pickle.PickleDataSet
   filepath: data/01_raw/instances_${huggingface_split}.pkl

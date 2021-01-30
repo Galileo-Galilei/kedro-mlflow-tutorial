@@ -1,4 +1,5 @@
 from kedro.pipeline import Pipeline, node
+
 from kedro_mlflow_tutorial.pipelines.etl_app.create_data import (
     create_instances,
     create_labels,

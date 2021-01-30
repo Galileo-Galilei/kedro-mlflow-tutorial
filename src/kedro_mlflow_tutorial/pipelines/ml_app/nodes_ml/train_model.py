@@ -1,6 +1,6 @@
-from sklearn.model_selection import train_test_split
-import xgboost as xgb
 import mlflow
+import xgboost as xgb
+from sklearn.model_selection import train_test_split
 
 
 def create_training_data(features, labels, test_size, random_state):
@@ -61,4 +61,3 @@ def plot_xgb_importance(model):
 
 def calculate_contingency_matrix(xgb_model):
     pass
-
