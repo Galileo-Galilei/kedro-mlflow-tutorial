@@ -35,7 +35,7 @@ conda activate kedro_mlflow_tutorial
 pip install -e src/.
 ```
 
-*Note: You don't need to call ``kedro mlflow init`` command as you do in a nfreshly created repo since the ``mlflow.yml`` is already pre-configured.*
+*Note: You don't need to call ``kedro mlflow init`` command as you do in a freshly created repo since the ``mlflow.yml`` is already pre-configured.*
 
 ## Project components
 
@@ -121,11 +121,11 @@ Let's break it down:
 
 - we already have a ``training`` and ``inference`` pipelines written in pure kedro, that are filtered out a bigger pipeline from their tags
 - We "bind" these two pipeline with the ``pipeline_ml_factory`` function with the following arguments:
-  - ``training``: the pipeline that will be executed when laucnhing the "kedro run --pipeline=training" command
-  - ``inference``: the pipeline which be logged in mlflow as a [Mlflow Model](https://www.mlflow.org/docs/latest/models.html) at the end of the training pipeline
-  - ``input_name``: the name in the ``catalog.yml`` of the dataset which contains the data (either to train on for the training pipeline or to predict on for the inference pipeline). This must be the same name for both pipelines
-  - ``model_name`` (optional): the name of the folder containing the model in mlflow
-  - ``conda_env``: the conda environment with the package you need for inference. You can pass a python dictionnary, or a path to your ``requirements.txt`` or ``conda.yml`` files.
+  - ``training``: the pipeline that will be executed when laucnhing the "kedro run --pipeline=training" command.
+  - ``inference``: the pipeline which be logged in mlflow as a [Mlflow Model](https://www.mlflow.org/docs/latest/models.html) at the end of the training pipeline.
+  - ``input_name``: the name in the ``catalog.yml`` of the dataset which contains the data (either to train on for the training pipeline or to predict on for the inference pipeline). This must be the same name for both pipelines.
+  - ``model_name`` (optional): the name of the folder containing the model in mlflow.
+  - ``conda_env`` (optional): the conda environment with the package you need for inference. You can pass a python dictionnary, or a path to your ``requirements.txt`` or ``conda.yml`` files.
   - ``model_signature`` (optional): The [mlflow signature](https://mlflow.org/docs/latest/models.html#model-signature) of your ``input_name`` dataset (``instances`` in our example). This is an object that contains the columns names and type. This will be use to make a consistency check when predicting with the model on new data. If you set it to "auto", ``kedro-mlflow`` will automatically retrieve it from the training data. This is experimental and sometimes come with bugs, you can set it to "None" to avoid using it.
 
 #### Create your ml application
@@ -134,8 +134,8 @@ The ml application (chich contains both the ``training`` and ``inference`` pipel
 
 You can encounter the following use cases:
 
-- a **preprocessing node which performs deterministic operations with no parameters** (lowerize text, remove punctuation...). Tag theses nodes as ``["training", "inference"]`` to ensure it will be used in both pipelines
-- a **preprocessing node which performs deterministic operations with shared parameters** between inference and training (e.g remove stopwords which exists in a given file). Tag such nodes as ``["training", "inference"]`` to ensure it will be used in both pipelines, and persist the shared parameters in the ``catalog.yml``:
+- a [**preprocessing node which performs deterministic operations with no parameters**](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/main/src/kedro_mlflow_tutorial/pipelines/ml_app/pipeline.py#L46) (lowerize text, remove punctuation...). Tag theses nodes as ``["training", "inference"]`` to ensure it will be used in both pipelines
+- a [**preprocessing node which performs deterministic operations with shared parameters**](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/main/src/kedro_mlflow_tutorial/pipelines/ml_app/pipeline.py#L52) between inference and training (e.g remove stopwords which exists in a given file). Tag such nodes as ``["training", "inference"]`` to ensure it will be used in both pipelines, and persist the shared parameters in the ``catalog.yml``:
 
 ```yaml
 # catalog.yml
@@ -145,7 +145,7 @@ english_stopwords:
   filepath: data/01_raw/stopwords.yml  # <- This must be a local path, no matter what is your mlflow storage (S3 or other)
 ```
 
-- a **preprocessing node which produces an object fitted on data** which will be reused to apply the processing to data. Some examples can be a tokenizer, an encoder, a vectorizer,a nd obvisously the mcahine learning model itself... Such operations must absolutely be splitted in two different nodes:
+- a [**preprocessing node which produces an object fitted on data**](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/main/src/kedro_mlflow_tutorial/pipelines/ml_app/pipeline.py#L70) which will be reused to apply the processing to data. Some examples can be a tokenizer, an encoder, a vectorizer,a nd obvisously the mcahine learning model itself... Such operations must absolutely be splitted in two different nodes:
   - a ``fit_object`` (the name does not matter) node which creates the object. It will be tagged as ``["training"]`` only because the object must not be refitted on new data. This object must be persisted in the ``catalog.yml`` for further reuse.
 
   ```yaml
@@ -157,8 +157,8 @@ english_stopwords:
     ```
 
   - a ``transform_data`` (the name does not matter) node which applies the object to the data. It will be tagged as ``["training", "inference"]`` because it need to be applied in both pipelines.
-- Some training specific operations (split between train and test datasets, hyperparameter tuning...) which are tagged as ``["training"]`` only.
-- Some post analysis after model training to assess its performance. Since they are not used in inference, you can tag them as ``["training"]``. You can still log them as artifacts to make comparison between runs easier:
+- Some [**training specific operations**](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/main/src/kedro_mlflow_tutorial/pipelines/ml_app/pipeline.py#L87) (split between train and test datasets, hyperparameter tuning...) which are tagged as ``["training"]`` only.
+- Some [**post analysis after model training**](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/main/src/kedro_mlflow_tutorial/pipelines/ml_app/pipeline.py#L112) to assess its performance. Since they are not used in inference, you can tag these nodes as ``["training"]``. You can still log them as artifacts to make comparison between runs easier:
 
 ```yaml
 # catalog.yml
@@ -267,7 +267,9 @@ pipeline_inference_model:
 
 Then you can reuse it in a node to predict with this model which is the entire inference pipeline at the time you launched the training.
 
-An example is [given in the user_app folder]().
+An example is [given in the user_app folder](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/main/src/kedro_mlflow_tutorial/pipelines/user_app/pipeline.py#L6).
+
+To try it out, rerun the ``etl_instances`` pipeline with the globals parameter ``huggingface_split: test`` to create test data, then run the user_app pipeline to see the predictions. Enjoy modifying the ``user_app`` to add your own monitoring!
 
 #### Scenario 3: Serve the model with mlflow
 
@@ -281,7 +283,8 @@ mlflow models serve -m "runs:/<your-model-run-id>/kedro_mlflow_tutorial"
 
 This will serve your model as an API (beware: there are known issues on windows). You can test it with:
 ```
+
 curl -d '{"columns":["text"],"index":[0,1],"data":[["This movie is cool"],["awful film"]]}' -H 'Content-Type: application/json'  localhost:5000/invocations
 ```
 
-The best way to deploy it is to dockerize it, but this is beyond the scope of this tutorial. Mlflow provides a lot of [documentation on deployment](https://www.mlflow.org/docs/latest/python_api/mlflow.deployments.html) on different target platforms.
+The more common way to deploy it is to dockerize it, but this is beyond the scope of this tutorial. Mlflow provides a lot of [documentation on deployment](https://www.mlflow.org/docs/latest/python_api/mlflow.deployments.html) on different target platforms.
