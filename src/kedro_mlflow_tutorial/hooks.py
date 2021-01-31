@@ -66,6 +66,7 @@ class ProjectHooks:
                 "python": 3.7,
                 "pip": [f"kedro_mlflow_tutorial=={PROJECT_VERSION}"],
             },
+            model_signature="auto",
         )
 
         user_app_pipeline = create_user_app_pipeline()

@@ -62,6 +62,7 @@ pipeline_inference_model:
   type: kedro_mlflow.io.models.MlflowModelLoggerDataSet
   flavor: mlflow.pyfunc
   pyfunc_workflow: python_model
+  artifact_path: kedro_mlflow_tutorial
   run_id: ${run_id_to_serve}
 
 final_predictions:

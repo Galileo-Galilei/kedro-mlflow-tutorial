@@ -57,7 +57,3 @@ def plot_xgb_importance(model):
     ax = xgb.plot_importance(model, max_num_features=20)
     ax.figure.tight_layout()
     return ax.figure
-
-
-def calculate_contingency_matrix(xgb_model):
-    pass
