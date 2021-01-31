@@ -287,4 +287,4 @@ This will serve your model as an API (beware: there are known issues on windows)
 curl -d '{"columns":["text"],"index":[0,1],"data":[["This movie is cool"],["awful film"]]}' -H 'Content-Type: application/json'  localhost:5000/invocations
 ```
 
-The more common way to deploy it is to dockerize it, but this is beyond the scope of this tutorial. Mlflow provides a lot of [documentation on deployment](https://www.mlflow.org/docs/latest/python_api/mlflow.deployments.html) on different target platforms.
+The most common way to deploy it is to dockerize it, but this is beyond the scope of this tutorial. Mlflow provides a lot of [documentation on deployment](https://www.mlflow.org/docs/latest/python_api/mlflow.deployments.html) on different target platforms.
