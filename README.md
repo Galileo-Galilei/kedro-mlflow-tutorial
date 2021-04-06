@@ -12,7 +12,7 @@ This tutorial shows how to use [kedro-mlflow plugin](https://github.com/Galileo-
 
 Specifically, it will focus on how one can use the `pipeline_ml_factory` to maintain consistency between training and inference and prepare deployment. It will show best practices on code organization to ensure easy transition to deployment and strong reproducibility.
 
-We will not emphaisize the fact that [``kedro-mlflow`` provides advanced versioning capabilities tracking](https://kedro-mlflow.readthedocs.io/en/stable/source/04_experimentation_tracking/index.html), including automatic parameters tracking, but look at the documentation to see what it is capable of!
+We will not emphasize the fact that [``kedro-mlflow`` provides advanced versioning capabilities tracking](https://kedro-mlflow.readthedocs.io/en/stable/source/04_experimentation_tracking/index.html), including automatic parameters tracking, but look at the documentation to see what it is capable of!
 
 ### Disclaimer
 
