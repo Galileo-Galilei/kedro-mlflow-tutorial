@@ -1,11 +1,11 @@
-kedro==0.16.6
+kedro==0.17.7
+kedro-telemetry~=0.1.0
 pandas==0.25.3 # above >1.0.0, the mlflow signature raises an error with a string column
 datasets==1.2.1
-kedro-viz==3.17.1
-kedro-mlflow==0.4.1
-mlflow==1.26.1 # above 1.10.0, the UI crashes unexpectedly when selecting the model.
-# numpy==1.18.5 ## several known bugs with numpy>1.19
-scikit-learn==0.23.2
-xgboost==1.2.0
-matplotlib==3.3.4
+kedro-viz>=4.0.0,<5.0.0
+kedro-mlflow==0.8.1
+mlflow==1.26.1 
+scikit-learn>=1.0.0,<2.0.0
+xgboost>=1.2.0,<2.0.0
+matplotlib>=3.5.0,<3.6.0
 keras-preprocessing==1.1.2

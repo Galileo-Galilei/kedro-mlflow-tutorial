@@ -1,0 +1,22 @@
+[tool.kedro]
+package_name = "kedro_mlflow_tutorial"
+project_name = "kedro mlflow tutorial"
+project_version = "0.17.7"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+known_third_party = "kedro"
+
+[tool.pytest.ini_options]
+addopts = """
+--cov-report term-missing \
+--cov src/kedro_mlflow_tutorial -ra"""
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
