@@ -32,7 +32,7 @@ cd kedro-mlflow-tutorial
 ```bash
 conda create -n kedro_mlflow_tutorial python=3.7
 conda activate kedro_mlflow_tutorial
-pip install -e src/.
+pip install -e src
 ```
 
 *Note: You don't need to call ``kedro mlflow init`` command as you do in a freshly created repo since the ``mlflow.yml`` is already pre-configured.*
@@ -100,16 +100,16 @@ class ProjectHooks:
         ml_pipeline = create_ml_pipeline()
         training_pipeline_ml = pipeline_ml_factory(
             training=ml_pipeline.only_nodes_with_tags("training"),
-            inference=ml_pipeline.only_nodes_with_tags("inference"),
+            inference=inference_pipeline,
             input_name="instances",
             model_name="kedro_mlflow_tutorial",
             conda_env={
                 "python": 3.7,
-                "pip": [f"kedro_mlflow_tutorial=={PROJECT_VERSION}"],
+                "build_dependencies": ["pip"],
+                "dependencies": [f"kedro_mlflow_tutorial=={PROJECT_VERSION}"],
             },
             model_signature="auto",
         )
-
         ...
 
         return {

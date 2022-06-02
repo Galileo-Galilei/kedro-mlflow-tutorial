@@ -64,7 +64,8 @@ class ProjectHooks:
             model_name="kedro_mlflow_tutorial",
             conda_env={
                 "python": 3.7,
-                "pip": [f"kedro_mlflow_tutorial=={PROJECT_VERSION}"],
+                "build_dependencies": ["pip"],
+                "dependencies": [f"kedro_mlflow_tutorial=={PROJECT_VERSION}"],
             },
             model_signature="auto",
         )
