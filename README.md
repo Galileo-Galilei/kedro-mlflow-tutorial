@@ -4,10 +4,11 @@
 
 ### Pre-requisite
 
-This tutorial assumes the user is familiar with Kedro. We will refer to a `kedro>=0.17.0, <0.18.0` project template files (e.g. `catalog.yml`, `pipeline.py` and `hooks.py`).
+This tutorial assumes the user is familiar with Kedro. We will refer to a `kedro>=0.18.0, <0.19.0` project template files.
 
 If you want to check out for older kedro version, see:
-- the branch [``main-kedro-0.16``](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/tree/main-kedro-0.16) for  `kedro>=0.16.5, <0.17.0`
+- the branch [``main-kedro-0.16``](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/tree/main-kedro-0.16) for  `kedro>=0.16.0, <0.17.0`
+- the branch [``main-kedro-0.17``](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/tree/main-kedro-0.17) for  `kedro>=0.17.0, <0.18.0`
 
 ### Goal of the tutorial
 
@@ -33,7 +34,7 @@ cd kedro-mlflow-tutorial
 2. Install dependencies:
 
 ```bash
-conda create -n kedro_mlflow_tutorial python=3.7
+conda create -n kedro_mlflow_tutorial python=3.9
 conda activate kedro_mlflow_tutorial
 pip install -e src
 ```
@@ -87,7 +88,7 @@ The key part is to convert your ``training`` pipeline from a [``Pipeline`` kedro
 
 This can be [done in the ``pipeline_registry.py`` file](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/9bca6055183453f49beade415517b17e17b5affc/src/kedro_mlflow_tutorial/pipeline_registry.py#L26-L39) thanks to the ``pipeline_ml_factory`` helper function.
 
-The [``register_pipeline`` hook of the``hooks.py``](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/9bca6055183453f49beade415517b17e17b5affc/src/kedro_mlflow_tutorial/pipeline_registry.py#L13-L53) looks like this (below snippet is slightly simplified for readability):
+The [``register_pipeline`` hook of the``pipeline_registry.py``](https://github.com/Galileo-Galilei/kedro-mlflow-tutorial/blob/9bca6055183453f49beade415517b17e17b5affc/src/kedro_mlflow_tutorial/pipeline_registry.py#L13-L53) looks like this (below snippet is slightly simplified for readability):
 
 ```python
 from kedro_mlflow_tutorial.pipelines.ml_app.pipeline import create_ml_pipeline
@@ -107,7 +108,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
         log_model_kwargs=dict(
             artifact_path="kedro_mlflow_tutorial",
             conda_env={
-                "python": 3.8.12,
+                "python": 3.9.12,
                 "build_dependencies": ["pip"],
                 "dependencies": [f"kedro_mlflow_tutorial=={PROJECT_VERSION}"],
             },
@@ -228,7 +229,7 @@ You can see:
 
 On this picture, we can also see the extra image "xgb_feature_importance.png"  logged after model training.
 
-> By following these simple steps (basically ~5 lines of code to declare our training and inference pipeline in ``hooks.py`` with ``pipeline_ml_factory``), we have a **perfect synchronicity between our training and inference pipelines**. Each code change (adding a node or modify a function), parameter changes or data changes (through artifacts fitting) are automatically resolved. **You are now sure that you will be able to predict from any old run** in one line of code!
+> By following these simple steps (basically ~5 lines of code to declare our training and inference pipeline in ``pipeline_registry.py`` with ``pipeline_ml_factory``), we have a **perfect synchronicity between our training and inference pipelines**. Each code change (adding a node or modify a function), parameter changes or data changes (through artifacts fitting) are automatically resolved. **You are now sure that you will be able to predict from any old run** in one line of code!
 
 ### Serve the inference pipeline to an end user
 
@@ -240,13 +241,17 @@ If anyone else want to reuse your model from python, the ``load_model`` function
 PROJECT_PATH = r"<your/project/path>"
 RUN_ID = "<your-run-id>"
 
-from kedro.framework.context import load_context
-from kedro_mlflow.framework.context import get_mlflow_config
+from kedro.framework.startup import bootstrap_project
+from kedro.framework.session import KedroSession
 from mlflow.pyfunc import load_model
 
-local_context = load_context(PROJECT_PATH)
-mlflow_config = get_mlflow_config(local_context)
-mlflow_config.setup(local_context)
+bootstrap_project(PROJECT_PATH)
+session=Kedrosession.create(
+  session_id=1,
+  project_path=PROJECT_PATH,
+  package_name="kedro_mlflow_tutorial",
+)
+local_context = session.load_context() # setup mlflow config
 
 instances = local_context.io.load("instances")
 model = load_model(f"runs:/{RUN_ID}/kedro_mlflow_tutorial")

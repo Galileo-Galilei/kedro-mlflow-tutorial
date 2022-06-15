@@ -61,7 +61,7 @@ pipeline_inference_model:
   type: kedro_mlflow.io.models.MlflowModelLoggerDataSet
   flavor: mlflow.pyfunc
   pyfunc_workflow: python_model
-  artifact_path: kedro_mlflow_tutorial
+  artifact_path: model # it should be 'kedro_mlflow_tutorial', but there is a bug in kedro-mlflow==0.10.0
   run_id: ${run_id_to_serve}
 
 final_predictions:
