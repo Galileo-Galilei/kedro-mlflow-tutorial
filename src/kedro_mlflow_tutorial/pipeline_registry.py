@@ -28,7 +28,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
         inference=inference_pipeline,
         input_name="instances",
         log_model_kwargs=dict(
-            artifact_path="kedro_mlflow_tutorial",
+            artifact_path="kedro_mlflow_tutorial",  # does not work with kedro==0.10.0
             conda_env={
                 "python": 3.7,
                 "build_dependencies": ["pip"],

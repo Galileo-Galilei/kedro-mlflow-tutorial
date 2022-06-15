@@ -31,19 +31,19 @@ def train_xgb_model(
         dtrain=dtrain,
         num_boost_round=num_boost_round,
         evals=evaluation_list,
+        evals_result=training_history,
         early_stopping_rounds=early_stopping_rounds,
-        callbacks=[xgb.callback.record_evaluation(training_history)],
     )
 
     # TODO: return metrics and log it with mlflow metrics dataset
-    training_metrics = training_history["train"]
+    training_metrics = training_history["train"].copy()
     training_metrics = {f"train_{k}": v for k, v in training_metrics.items()}
 
     for i, (metric_name, metric_history) in enumerate(training_metrics.items()):
         for metric in metric_history:
             mlflow.log_metric(metric_name, metric, step=i)
 
-    eval_metrics = training_history["eval"]
+    eval_metrics = training_history["eval"].copy()
     eval_metrics = {f"eval_{k}": v for k, v in eval_metrics.items()}
     for i, (metric_name, metric_history) in enumerate(eval_metrics.items()):
         for metric in metric_history:
