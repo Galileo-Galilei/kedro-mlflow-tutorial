@@ -48,6 +48,28 @@ xgb_model:
   type: pickle.PickleDataSet
   filepath: data/06_models/xgb_model.pkl
 
+xgb_train_auc:
+  type: kedro_mlflow.io.metrics.MlflowMetricHistoryDataSet
+  save_args:
+    mode: list
+
+xgb_eval_auc:
+  type: kedro_mlflow.io.metrics.MlflowMetricHistoryDataSet
+  save_args:
+    mode: list
+
+xgb_train_logloss:
+  type: kedro_mlflow.io.metrics.MlflowMetricHistoryDataSet
+  save_args:
+    mode: list
+
+xgb_eval_logloss:
+  type: kedro_mlflow.io.metrics.MlflowMetricHistoryDataSet
+  save_args:
+    mode: list
+
+
+
 xgb_feature_importance:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
   data_set:

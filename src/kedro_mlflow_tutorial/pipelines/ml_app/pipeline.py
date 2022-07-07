@@ -106,7 +106,13 @@ def create_ml_pipeline(**kwargs):
                     num_boost_round="params:xgb_num_rounds",
                     early_stopping_rounds="params:xgb_early_stopping_rounds",
                 ),
-                outputs="xgb_model",
+                outputs=[
+                    "xgb_model",
+                    "xgb_train_auc",
+                    "xgb_eval_auc",
+                    "xgb_train_logloss",
+                    "xgb_eval_logloss",
+                ],
                 tags=["training"],
             ),
             node(

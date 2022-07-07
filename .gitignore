@@ -163,3 +163,6 @@ notebooks/debug.py
 *.log
 mlruns/*
 .vscode
+
+conf/debug/
+notebooks/

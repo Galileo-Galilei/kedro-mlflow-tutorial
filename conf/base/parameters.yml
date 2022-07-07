@@ -14,7 +14,6 @@ xgb_hyperparameters:
   max_depth: 8
   subsample: 0.8
   colsample_bytree: 0.8
-  eval_metric: [auc, logloss]
   nthread: -1
 
 xgb_num_rounds: 1000

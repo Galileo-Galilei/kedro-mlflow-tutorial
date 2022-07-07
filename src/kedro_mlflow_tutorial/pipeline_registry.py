@@ -1,4 +1,5 @@
 """Project pipelines."""
+from platform import python_version
 from typing import Dict
 
 from kedro.pipeline import Pipeline
@@ -28,9 +29,9 @@ def register_pipelines() -> Dict[str, Pipeline]:
         inference=inference_pipeline,
         input_name="instances",
         log_model_kwargs=dict(
-            artifact_path="kedro_mlflow_tutorial",  # does not work with kedro==0.10.0
+            artifact_path="kedro_mlflow_tutorial",
             conda_env={
-                "python": 3.7,
+                "python": python_version(),
                 "build_dependencies": ["pip"],
                 "dependencies": [f"kedro_mlflow_tutorial=={PROJECT_VERSION}"],
             },

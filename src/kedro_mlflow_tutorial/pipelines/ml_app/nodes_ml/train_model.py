@@ -1,4 +1,3 @@
-import mlflow
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 
@@ -26,6 +25,8 @@ def train_xgb_model(
 
     training_history = {}
 
+    hyperparameters = {**hyperparameters, "eval_metric": ["auc", "logloss"]}
+
     xgb_model = xgb.train(
         params=hyperparameters,
         dtrain=dtrain,
@@ -35,21 +36,13 @@ def train_xgb_model(
         early_stopping_rounds=early_stopping_rounds,
     )
 
-    # TODO: return metrics and log it with mlflow metrics dataset
-    training_metrics = training_history["train"].copy()
-    training_metrics = {f"train_{k}": v for k, v in training_metrics.items()}
-
-    for i, (metric_name, metric_history) in enumerate(training_metrics.items()):
-        for metric in metric_history:
-            mlflow.log_metric(metric_name, metric, step=i)
-
-    eval_metrics = training_history["eval"].copy()
-    eval_metrics = {f"eval_{k}": v for k, v in eval_metrics.items()}
-    for i, (metric_name, metric_history) in enumerate(eval_metrics.items()):
-        for metric in metric_history:
-            mlflow.log_metric(metric_name, metric, step=i)
-
-    return xgb_model
+    return (
+        xgb_model,
+        training_history["train"]["auc"],
+        training_history["eval"]["auc"],
+        training_history["train"]["logloss"],
+        training_history["eval"]["logloss"],
+    )
 
 
 def plot_xgb_importance(model):
