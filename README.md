@@ -295,9 +295,9 @@ mlflow models serve -m "runs:/<your-model-run-id>/kedro_mlflow_tutorial"
 ```
 
 This will serve your model as an API (beware: there are known issues on windows). You can test it with:
-```
 
-curl -d '{"columns":["text"],"index":[0,1],"data":[["This movie is cool"],["awful film"]]}' -H 'Content-Type: application/json'  localhost:5000/invocations
+```
+curl -d "{\"columns\":[\"text\"],\"index\":[0,1],\"data\":[[\"This movie is cool\"],[\"awful film\"]]}" -H "Content-Type: application/json"  localhost:5000/invocations
 ```
 
 The most common way to deploy it is to dockerize it, but this is beyond the scope of this tutorial. Mlflow provides a lot of [documentation on deployment](https://www.mlflow.org/docs/latest/python_api/mlflow.deployments.html) on different target platforms.
