@@ -1,4 +1,4 @@
-kedro==0.18.1
+kedro==0.18.2
 kedro-telemetry~=0.2.0
 pandas>=1.0.0, <2.0.0 # above >1.0.0, the mlflow signature raises an error with a string column
 datasets==1.2.1

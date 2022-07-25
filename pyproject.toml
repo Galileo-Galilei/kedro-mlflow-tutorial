@@ -1,7 +1,7 @@
 [tool.kedro]
 package_name = "kedro_mlflow_tutorial"
 project_name = "kedro mlflow tutorial"
-project_version = "0.18.1"
+project_version = "0.18.2"
 
 [tool.isort]
 multi_line_output = 3
