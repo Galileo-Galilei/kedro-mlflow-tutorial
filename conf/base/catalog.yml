@@ -86,6 +86,6 @@ pipeline_inference_model:
   artifact_path: kedro_mlflow_tutorial
   run_id: ${run_id_to_serve}
 
-final_predictions:
+predictions:
   type: pickle.PickleDataSet
   filepath: data/07_model_output/predictions_${huggingface_split}.pkl
